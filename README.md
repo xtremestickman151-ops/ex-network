@@ -12,20 +12,22 @@ A small Windows app that helps keep your WiFi connection **stable**.
 - **Ping test:** average and min/max latency, plus packet loss.
 - **Update check** in Settings. It only opens the download page; nothing installs automatically.
 
-## Install
-1. Download `EX_WIFI_ENHANCE.zip` from [Releases](../../releases/latest).
-2. Extract the whole zip, then run `EX WIFI ENHANCE.exe` inside the `EX WIFI ENHANCE` folder. Keep the `_internal` folder next to it.
-3. The app is unsigned, so SmartScreen may warn you: click **More info → Run anyway**. Some antivirus tools flag PyInstaller apps by mistake.
-4. Admin rights are only needed for Stabilize, Release/Renew and Winsock reset. The app offers to restart itself as administrator when needed.
+## Install (recommended)
+1. Download **`EX WIFI ENHANCE Setup <version>.exe`** from [Releases](../../releases/latest) and run it. No admin rights needed: it installs for your user to `%LOCALAPPDATA%\Programs\EX WIFI ENHANCE`, adds a Start menu shortcut (Desktop shortcut optional), and registers an uninstaller under Settings → Apps.
+2. The app and installer are unsigned, so SmartScreen may warn you: click **More info → Run anyway**. Some antivirus tools flag PyInstaller apps by mistake.
+3. Admin rights are only needed inside the app for Stabilize, Release/Renew and Winsock reset. The app offers to restart itself as administrator when needed.
 
 ## Update
-Close the app. Download `EX_WIFI_ENHANCE_update.zip`, which contains only the files that changed since the previous version, and extract it into the folder that contains `EX WIFI ENHANCE`, letting it overwrite existing files. If you are more than one version behind, use the full zip instead.
+Run the newest installer over your existing install; it replaces the app files cleanly. *Check for updates* in Settings opens it for you.
+
+Portable alternative: `EX_WIFI_ENHANCE.zip` is the full app (extract the whole folder). `EX_WIFI_ENHANCE_update.zip` contains only the changed files and **only works on top of a complete previous install**. Extracting it alone gives "Failed to load Python DLL".
 
 ## Build from source (Windows)
 ```
 pip install pyinstaller
 pyinstaller --onedir --noconsole --name "EX WIFI ENHANCE" --icon logo.ico --version-file version.txt --add-data "logo.ico;." --add-data "logo256.png;." ex_wifi_enhance.py
 ```
+Installer: compile `installer.iss` with Inno Setup 6.
 
 ---
 ©2026 EX Inc.

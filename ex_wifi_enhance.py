@@ -50,7 +50,7 @@ def check_update():
     except Exception as e:
         return "error", "Could not check for updates (%s)." % (getattr(e, "reason", None) or e)
     if vtuple(ver) > vtuple(APP_VERSION):
-        return "newer", {"version": ver, "url": url, "notes": str(m.get("notes", "")), "full_url": str(m.get("full_url", ""))}
+        return "newer", {"version": ver, "url": url, "notes": str(m.get("notes", "")), "full_url": str(m.get("full_url", "")), "installer_url": str(m.get("installer_url", ""))}
     return "latest", "You have the latest version (%s)." % APP_VERSION
 
 
@@ -414,10 +414,14 @@ class App(tk.Tk):
             self.upd.set(d); self.emit("Update check: " + d); return
         self.upd.set("Version %s available" % d["version"]); self.emit("Update available: " + d["version"])
         msg = "Version %s is available (you have %s).\n\n%s" % (d["version"], APP_VERSION, d["notes"] or "")
-        msg += "\n\nUpdate: extract the downloaded zip over your existing 'EX WIFI ENHANCE' folder (close the app first)."
-        if d["url"].lower().startswith(("https://", "http://")):
-            if messagebox.askyesno(APP, msg + "\n\nOpen the download page in your browser?"):
-                import webbrowser; webbrowser.open(d["url"])
+        link = d.get("installer_url") or d["url"]
+        if d.get("installer_url"):
+            msg += "\n\nUpdate: download and run the installer (close the app first). Your settings are kept."
+        else:
+            msg += "\n\nUpdate: extract the downloaded zip over your existing 'EX WIFI ENHANCE' folder (close the app first)."
+        if link.lower().startswith(("https://", "http://")):
+            if messagebox.askyesno(APP, msg + "\n\nOpen the download in your browser?"):
+                import webbrowser; webbrowser.open(link)
         else:
             messagebox.showinfo(APP, msg)
 
