@@ -24,5 +24,8 @@ Close the app. Download `EX_WIFI_ENHANCE_update.zip`, which contains only the fi
 ## Build from source (Windows)
 ```
 pip install pyinstaller
-pyinstaller --onedir --noconsole --name "EX WIFI ENHANCE" --icon logo.ico --add-data "logo.ico;." --add-data "logo256.png;." ex_wifi_enhance.py
+pyinstaller --onedir --noconsole --name "EX WIFI ENHANCE" --icon logo.ico --version-file version.txt --add-data "logo.ico;." --add-data "logo256.png;." ex_wifi_enhance.py
 ```
+
+---
+©2026 EX Inc.

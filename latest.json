@@ -1,6 +1,6 @@
 {
-  "version": "1.1.1",
-  "url": "https://github.com/xtremestickman151-ops/ex-wifi-enhance/releases/download/v1.1.1/EX_WIFI_ENHANCE_update.zip",
-  "full_url": "https://github.com/xtremestickman151-ops/ex-wifi-enhance/releases/download/v1.1.1/EX_WIFI_ENHANCE.zip",
-  "notes": "Enables the built-in update checker (update server configured). The update zip only applies on top of 1.1.0; for older or fresh installs use the full zip."
+  "version": "1.1.2",
+  "url": "https://github.com/xtremestickman151-ops/ex-wifi-enhance/releases/download/v1.1.2/EX_WIFI_ENHANCE_update.zip",
+  "full_url": "https://github.com/xtremestickman151-ops/ex-wifi-enhance/releases/download/v1.1.2/EX_WIFI_ENHANCE.zip",
+  "notes": "Adds the \u00a92026 EX Inc. copyright notice (sidebar, Settings and Windows file properties). The update zip applies on top of 1.1.1; use the full zip for older or fresh installs."
 }
