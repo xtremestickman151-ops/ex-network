@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 APP = "EX WIFI ENHANCE"
-APP_VERSION = "1.1.2"
+APP_VERSION = "1.1.3"
 COPYRIGHT = "\u00a92026 EX Inc."
 # JSON manifest: {"version": "x.y.z", "url": "https://.../EX_WIFI_ENHANCE.zip", "notes": "..."}
 UPDATE_URL = "https://raw.githubusercontent.com/xtremestickman151-ops/ex-wifi-enhance/main/latest.json"
@@ -177,6 +177,14 @@ class PillButton(tk.Canvas):
         self.create_text(w//2, h//2, text=self.text, fill=self.fg, font=(FONT, 10, "bold"))
 
 
+class NoticeBox(tk.Canvas):
+    """Small rounded bordered box with centered text (copyright notice)."""
+    def __init__(self, master, text, bg, w=160, h=28, size=8):
+        super().__init__(master, width=w, height=h, bg=bg, highlightthickness=0)
+        rrect(self, 1, 1, w-1, h-1, 9, fill="#1c1c1e", outline="#3a3a3d", width=1)
+        self.create_text(w//2, h//2, text=text, fill="#c7c7cc", font=(FONT, size))
+
+
 class Toggle(tk.Canvas):
     def __init__(self, master, var, cmd=None, bg=CARD):
         super().__init__(master, width=48, height=26, bg=bg, highlightthickness=0, cursor="hand2")
@@ -229,7 +237,7 @@ class App(tk.Tk):
             l = tk.Label(side, text=f"  {icon}   {name}", anchor="w", bg=SIDE, fg=MUT, font=(FONT, 11), cursor="hand2", padx=14, pady=10)
             l.pack(fill="x", padx=12, pady=2); l.bind("<Button-1>", lambda e, n=name: self.show(n)); self.navs[name] = l
             self.pages[name] = tk.Frame(self.content, bg=BG)
-        tk.Label(side, text=COPYRIGHT, bg=SIDE, fg="#6e6e73", font=(FONT, 8)).pack(side="bottom", anchor="w", padx=20, pady=(0, 14))
+        NoticeBox(side, COPYRIGHT, SIDE, w=160, h=28).pack(side="bottom", pady=(4, 14))
         tk.Label(side, text="Honest tool: reduces drop-outs,\ndoes not raise your plan's speed.",
                  bg=SIDE, fg=MUT, font=(FONT, 8), justify="left").pack(side="bottom", anchor="w", padx=20, pady=(4, 2))
         self.build_home(); self.build_tools(); self.build_log(); self.build_settings()
@@ -305,9 +313,9 @@ class App(tk.Tk):
                  "latency spikes. It does NOT increase your internet speed.\n\nYour previous power-plan values are saved "
                  "and put back when you switch Stabilize off.").pack(anchor="w")
         PillButton(s.body, "Restore Windows defaults", lambda: self.bg(self.stabilize, False), w=210, fill=CARD2, fg=TXT).pack(anchor="w", pady=10)
-        u = Card(p, "ABOUT & UPDATES", height=150); u.pack(fill="x", pady=(14, 0))
+        u = Card(p, "ABOUT & UPDATES", height=170); u.pack(fill="x", pady=(14, 0))
         tk.Label(u.body, text="%s  version %s" % (APP, APP_VERSION), bg=CARD, fg=TXT, font=(FONT, 11, "bold")).pack(anchor="w")
-        tk.Label(u.body, text=COPYRIGHT, bg=CARD, fg="#6e6e73", font=(FONT, 9)).pack(anchor="w")
+        NoticeBox(u.body, COPYRIGHT, CARD, w=170, h=30, size=9).pack(anchor="w", pady=(6, 0))
         row = tk.Frame(u.body, bg=CARD); row.pack(fill="x", pady=8)
         PillButton(row, "Check for updates", self.update_click, w=180, fill=CARD2, fg=TXT).pack(side="left")
         self.upd = tk.StringVar(value=""); tk.Label(row, textvariable=self.upd, bg=CARD, fg=MUT, font=(FONT, 9)).pack(side="left", padx=12)

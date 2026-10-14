@@ -1,4 +1,4 @@
-﻿#define MyVer "1.1.2"
+﻿#define MyVer "1.1.3"
 [Setup]
 AppId={{6F3A2C1E-9B7D-4E21-A5C8-0E1F2A3B4C5D}
 AppName=EX WIFI ENHANCE
