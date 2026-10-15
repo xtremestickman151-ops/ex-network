@@ -1,4 +1,4 @@
-"""EX WIFI ENHANCE - honest WiFi stabilization helper for Windows.
+"""EX NETWORK - honest WiFi stabilization helper for Windows.
 It does NOT increase your connection speed. It reduces drop-outs caused by
 adapter power saving, auto-reconnects when the link dies, and runs standard
 network repair commands."""
@@ -6,11 +6,11 @@ import ctypes, os, re, subprocess, sys, threading, time, queue
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-APP = "EX WIFI ENHANCE"
-APP_VERSION = "1.1.3"
+APP = "EX NETWORK"
+APP_VERSION = "1.2.0"
 COPYRIGHT = "\u00a92026 EX Inc."
-# JSON manifest: {"version": "x.y.z", "url": "https://.../EX_WIFI_ENHANCE.zip", "notes": "..."}
-UPDATE_URL = "https://raw.githubusercontent.com/xtremestickman151-ops/ex-wifi-enhance/main/latest.json"
+# JSON manifest: {"version": "x.y.z", "url": "https://.../EX_NETWORK.zip", "notes": "..."}
+UPDATE_URL = "https://raw.githubusercontent.com/xtremestickman151-ops/ex-network/main/latest.json"
 NOWIN = 0x08000000  # CREATE_NO_WINDOW
 # powercfg GUIDs: Wireless Adapter Settings / Power Saving Mode
 WL_SUB = "19cbb8fa-5279-450e-9fac-8a3d5fedd0c1"
@@ -223,8 +223,8 @@ class App(tk.Tk):
         logo = tk.Canvas(side, width=200, height=90, bg=SIDE, highlightthickness=0); logo.pack()
         logo.create_oval(20, 28, 52, 60, outline="#8e8e93", width=2)
         for r in (6, 11): logo.create_arc(36-r, 44-r, 36+r, 44+r, start=45, extent=90, style="arc", outline=ON, width=2)
-        logo.create_text(62, 36, text="EX WIFI", anchor="w", fill=TXT, font=(FONT, 13, "bold"))
-        logo.create_text(62, 54, text="ENHANCE", anchor="w", fill=MUT, font=(FONT, 9, "bold"))
+        logo.create_text(62, 36, text="EX", anchor="w", fill=TXT, font=(FONT, 15, "bold"))
+        logo.create_text(62, 54, text="NETWORK", anchor="w", fill=MUT, font=(FONT, 9, "bold"))
         self.navs = {}; self.pages = {}
         main = tk.Frame(self, bg=BG); main.pack(side="left", fill="both", expand=True)
         if not is_admin():
@@ -237,6 +237,10 @@ class App(tk.Tk):
             l = tk.Label(side, text=f"  {icon}   {name}", anchor="w", bg=SIDE, fg=MUT, font=(FONT, 11), cursor="hand2", padx=14, pady=10)
             l.pack(fill="x", padx=12, pady=2); l.bind("<Button-1>", lambda e, n=name: self.show(n)); self.navs[name] = l
             self.pages[name] = tk.Frame(self.content, bg=BG)
+        tk.Frame(side, bg=BORDER, height=1).pack(fill="x", padx=24, pady=8)
+        up = tk.Label(side, text="  ⟳   Check for updates", anchor="w", bg=SIDE, fg=MUT, font=(FONT, 11), cursor="hand2", padx=14, pady=10)
+        up.pack(fill="x", padx=12, pady=2); up.bind("<Button-1>", lambda e: self.update_click(popup=True))
+        up.bind("<Enter>", lambda e: up.configure(bg=CARD2, fg=TXT)); up.bind("<Leave>", lambda e: up.configure(bg=SIDE, fg=MUT))
         NoticeBox(side, COPYRIGHT, SIDE, w=160, h=28).pack(side="bottom", pady=(4, 14))
         tk.Label(side, text="Honest tool: reduces drop-outs,\ndoes not raise your plan's speed.",
                  bg=SIDE, fg=MUT, font=(FONT, 8), justify="left").pack(side="bottom", anchor="w", padx=20, pady=(4, 2))
@@ -410,23 +414,26 @@ class App(tk.Tk):
         if not self.need_admin(): return
         self.busy = True; self.bg(self.stabilize, not self.stab)
 
-    def update_click(self):
+    def update_click(self, popup=False):
         self.upd.set("Checking…")
         def job():
             st, d = check_update()
-            self.after(0, lambda: self.update_result(st, d))
+            self.after(0, lambda: self.update_result(st, d, popup))
         self.bg(job)
 
-    def update_result(self, st, d):
+    def update_result(self, st, d, popup=False):
         if st != "newer":
-            self.upd.set(d); self.emit("Update check: " + d); return
+            self.upd.set(d); self.emit("Update check: " + d)
+            if popup:
+                (messagebox.showinfo if st == "latest" else messagebox.showwarning)(APP, d)
+            return
         self.upd.set("Version %s available" % d["version"]); self.emit("Update available: " + d["version"])
         msg = "Version %s is available (you have %s).\n\n%s" % (d["version"], APP_VERSION, d["notes"] or "")
         link = d.get("installer_url") or d["url"]
         if d.get("installer_url"):
             msg += "\n\nUpdate: download and run the installer (close the app first). Your settings are kept."
         else:
-            msg += "\n\nUpdate: extract the downloaded zip over your existing 'EX WIFI ENHANCE' folder (close the app first)."
+            msg += "\n\nUpdate: extract the downloaded zip over your existing 'EX NETWORK' folder (close the app first)."
         if link.lower().startswith(("https://", "http://")):
             if messagebox.askyesno(APP, msg + "\n\nOpen the download in your browser?"):
                 import webbrowser; webbrowser.open(link)
